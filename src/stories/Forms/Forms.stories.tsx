@@ -46,14 +46,45 @@ export const Overview: Story = {
             <div className="flex items-center gap-4">
               <label className="flex items-center gap-2">
                 <Checkbox defaultChecked />
-                <span className="text-sm text-slate-700">Accessibility checks</span>
+                <span className="text-sm text-slate-700 dark:text-slate-200">Accessibility checks</span>
               </label>
               <label className="flex items-center gap-2">
                 <Radio name="deploy" defaultChecked />
-                <span className="text-sm text-slate-700">Deploy to staging</span>
+                <span className="text-sm text-slate-700 dark:text-slate-200">Deploy to staging</span>
               </label>
             </div>
             <Button>Submit</Button>
+          </div>
+        </StorySurface>
+      </StoryGrid>
+    </StoryPage>
+  ),
+};
+
+export const ValidationState: Story = {
+  render: () => (
+    <StoryPage>
+      <StoryGrid>
+        <StorySurface>
+          <div className="space-y-2">
+            <Label color="success" htmlFor="success-input">
+              Valid input
+            </Label>
+            <TextInput color="success" id="success-input" defaultValue="storybook@flowbite.com" />
+            <HelperText>
+              <span className="font-medium">Looks good.</span> This email address is valid.
+            </HelperText>
+          </div>
+        </StorySurface>
+        <StorySurface>
+          <div className="space-y-2">
+            <Label color="failure" htmlFor="error-input">
+              Invalid input
+            </Label>
+            <TextInput color="failure" id="error-input" defaultValue="storybook@" />
+            <HelperText>
+              <span className="font-medium">Something is wrong.</span> Please enter a complete email address.
+            </HelperText>
           </div>
         </StorySurface>
       </StoryGrid>

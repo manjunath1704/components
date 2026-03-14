@@ -3,7 +3,11 @@ import { ListGroup, ListGroupItem } from "flowbite-react";
 import { HiClipboardCopy, HiCog, HiMail, HiUserCircle } from "react-icons/hi";
 import { StoryPage, StorySurface } from "../story-helpers";
 
-const meta = { title: "Flowbite/List group" } satisfies Meta;
+const meta = {
+  title: "Flowbite/List group",
+  component: ListGroup,
+  tags: ["autodocs"],
+} satisfies Meta<typeof ListGroup>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 
@@ -20,6 +24,20 @@ export const Default: Story = {
           <ListGroupItem disabled icon={HiClipboardCopy}>
             Exports pending
           </ListGroupItem>
+        </ListGroup>
+      </StorySurface>
+    </StoryPage>
+  ),
+};
+
+export const SimpleItems: Story = {
+  render: () => (
+    <StoryPage>
+      <StorySurface>
+        <ListGroup className="max-w-sm">
+          <ListGroupItem active>Overview</ListGroupItem>
+          <ListGroupItem>Usage</ListGroupItem>
+          <ListGroupItem>Examples</ListGroupItem>
         </ListGroup>
       </StorySurface>
     </StoryPage>

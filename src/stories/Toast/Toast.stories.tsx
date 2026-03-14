@@ -30,3 +30,24 @@ export const Default: Story = {
     </StoryPage>
   ),
 };
+
+export const Stacked: Story = {
+  render: () => (
+    <StoryPage>
+      <div className="space-y-4">
+        <StorySurface>
+          <Toast>
+            <div className="ml-1 text-sm font-normal">Your changes have been saved.</div>
+            <ToastToggle />
+          </Toast>
+        </StorySurface>
+        <StorySurface>
+          <Toast>
+            <div className="ml-1 text-sm font-normal">A new Storybook build is ready to review.</div>
+            <ToastToggle />
+          </Toast>
+        </StorySurface>
+      </div>
+    </StoryPage>
+  ),
+};

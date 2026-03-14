@@ -37,3 +37,22 @@ export const Default: Story = {
     </StoryPage>
   ),
 };
+
+export const Minimal: Story = {
+  render: () => (
+    <StoryPage>
+      <StorySurface>
+        <Timeline>
+          <TimelineItem>
+            <TimelinePoint />
+            <TimelineContent>
+              <TimelineTime>Today</TimelineTime>
+              <TimelineTitle>Created component folder stories</TimelineTitle>
+              <TimelineBody>The Storybook sidebar now mirrors the Flowbite component list.</TimelineBody>
+            </TimelineContent>
+          </TimelineItem>
+        </Timeline>
+      </StorySurface>
+    </StoryPage>
+  ),
+};

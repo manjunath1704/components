@@ -17,7 +17,7 @@ export const Default: Story = {
             <RatingStar />
             <RatingStar />
             <RatingStar filled={false} />
-            <p className="ml-2 text-sm font-medium text-slate-700">4.0 from 73 reviews</p>
+            <p className="ml-2 text-sm font-medium text-slate-700 dark:text-slate-200">4.0 from 73 reviews</p>
           </Rating>
           <div className="space-y-2">
             <RatingAdvanced percentFilled={70}>5 star</RatingAdvanced>
@@ -25,6 +25,22 @@ export const Default: Story = {
             <RatingAdvanced percentFilled={9}>3 star</RatingAdvanced>
           </div>
         </div>
+      </StorySurface>
+    </StoryPage>
+  ),
+};
+
+export const Compact: Story = {
+  render: () => (
+    <StoryPage>
+      <StorySurface>
+        <Rating>
+          <RatingStar />
+          <RatingStar />
+          <RatingStar />
+          <RatingStar />
+          <RatingStar />
+        </Rating>
       </StorySurface>
     </StoryPage>
   ),

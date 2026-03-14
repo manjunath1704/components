@@ -21,3 +21,13 @@ export const Default: Story = {
     </StoryPage>
   ),
 };
+
+export const LargeDataset: Story = {
+  render: () => (
+    <StoryPage>
+      <StorySurface>
+        <Pagination currentPage={8} totalPages={32} onPageChange={() => undefined} showIcons />
+      </StorySurface>
+    </StoryPage>
+  ),
+};

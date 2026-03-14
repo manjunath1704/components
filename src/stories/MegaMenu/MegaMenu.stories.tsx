@@ -30,20 +30,42 @@ export const Default: Story = {
           </NavbarCollapse>
           <MegaMenuDropdown toggle={<>Products</>}>
             <ul className="grid gap-4 p-4 sm:grid-cols-3">
-              <li className="rounded-2xl bg-slate-50 p-4">
-                <p className="font-semibold text-slate-900">Design System</p>
-                <p className="text-sm text-slate-600">Tokens and reusable UI patterns.</p>
+              <li className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800">
+                <p className="font-semibold text-slate-900 dark:text-white">Design System</p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">Tokens and reusable UI patterns.</p>
               </li>
-              <li className="rounded-2xl bg-slate-50 p-4">
-                <p className="font-semibold text-slate-900">Blocks</p>
-                <p className="text-sm text-slate-600">Landing pages, dashboards, and sections.</p>
+              <li className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800">
+                <p className="font-semibold text-slate-900 dark:text-white">Blocks</p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">Landing pages, dashboards, and sections.</p>
               </li>
-              <li className="rounded-2xl bg-slate-50 p-4">
-                <p className="font-semibold text-slate-900">Docs</p>
-                <p className="text-sm text-slate-600">Implementation guides and references.</p>
+              <li className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800">
+                <p className="font-semibold text-slate-900 dark:text-white">Docs</p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">Implementation guides and references.</p>
               </li>
             </ul>
           </MegaMenuDropdown>
+        </MegaMenu>
+      </StorySurface>
+    </StoryPage>
+  ),
+};
+
+export const Compact: Story = {
+  render: () => (
+    <StoryPage>
+      <StorySurface className="overflow-hidden">
+        <MegaMenu>
+          <NavbarBrand href="#">
+            <span className="self-center whitespace-nowrap text-xl font-semibold">Flowbite</span>
+          </NavbarBrand>
+          <NavbarToggle />
+          <NavbarCollapse>
+            <NavbarLink href="#" active>
+              Docs
+            </NavbarLink>
+            <NavbarLink href="#">Blocks</NavbarLink>
+            <NavbarLink href="#">Pricing</NavbarLink>
+          </NavbarCollapse>
         </MegaMenu>
       </StorySurface>
     </StoryPage>

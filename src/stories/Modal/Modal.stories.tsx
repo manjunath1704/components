@@ -11,12 +11,12 @@ function ModalExample() {
   const [open, setOpen] = useState(true);
 
   return (
-    <div className="relative min-h-[24rem] overflow-hidden rounded-3xl bg-slate-100 p-6">
+    <div className="relative min-h-[24rem] overflow-hidden rounded-3xl bg-slate-100 p-6 dark:bg-slate-800">
       <Button onClick={() => setOpen(true)}>Open modal</Button>
       <Modal show={open} onClose={() => setOpen(false)}>
         <ModalHeader>Review Storybook publish</ModalHeader>
         <ModalBody>
-          <p className="text-sm text-slate-600">This example uses a modal for a lightweight confirmation flow.</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300">This example uses a modal for a lightweight confirmation flow.</p>
         </ModalBody>
         <ModalFooter>
           <Button onClick={() => setOpen(false)}>Approve</Button>
@@ -30,6 +30,16 @@ function ModalExample() {
 }
 
 export const Default: Story = {
+  render: () => (
+    <StoryPage>
+      <StorySurface className="min-h-[30rem]">
+        <ModalExample />
+      </StorySurface>
+    </StoryPage>
+  ),
+};
+
+export const ConfirmationStyle: Story = {
   render: () => (
     <StoryPage>
       <StorySurface className="min-h-[30rem]">

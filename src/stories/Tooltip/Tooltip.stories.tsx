@@ -19,3 +19,23 @@ export const Default: Story = {
     </StoryPage>
   ),
 };
+
+export const MultipleTriggers: Story = {
+  render: () => (
+    <StoryPage>
+      <StorySurface>
+        <div className="flex flex-wrap gap-4">
+          <Tooltip content="Edit item">
+            <Button>Edit</Button>
+          </Tooltip>
+          <Tooltip content="Duplicate item">
+            <Button color="light">Duplicate</Button>
+          </Tooltip>
+          <Tooltip content="Delete item">
+            <Button color="failure">Delete</Button>
+          </Tooltip>
+        </div>
+      </StorySurface>
+    </StoryPage>
+  ),
+};

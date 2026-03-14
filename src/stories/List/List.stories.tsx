@@ -19,3 +19,17 @@ export const Default: Story = {
     </StoryPage>
   ),
 };
+
+export const OrderedStyle: Story = {
+  render: () => (
+    <StoryPage>
+      <StorySurface>
+        <ol className="list-decimal space-y-2 pl-5 text-sm text-slate-700 dark:text-slate-200">
+          <li>Review component behavior.</li>
+          <li>Validate visual styling.</li>
+          <li>Approve Storybook coverage.</li>
+        </ol>
+      </StorySurface>
+    </StoryPage>
+  ),
+};

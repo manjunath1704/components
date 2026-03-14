@@ -3,9 +3,32 @@ import { Dropdown, DropdownDivider, DropdownHeader, DropdownItem } from "flowbit
 import { HiCog, HiHome, HiMail } from "react-icons/hi";
 import { StoryPage, StorySurface } from "../story-helpers";
 
-const meta = { title: "Flowbite/Dropdown" } satisfies Meta;
+const meta = {
+  title: "Flowbite/Dropdown",
+  component: Dropdown,
+  tags: ["autodocs"],
+  args: {
+    dismissOnClick: false,
+    inline: false,
+    label: "Workspace",
+  },
+} satisfies Meta<typeof Dropdown>;
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+export const Playground: Story = {
+  render: (args) => (
+    <StoryPage>
+      <StorySurface>
+        <Dropdown {...args}>
+          <DropdownItem>Edit</DropdownItem>
+          <DropdownItem>Duplicate</DropdownItem>
+          <DropdownItem>Archive</DropdownItem>
+        </Dropdown>
+      </StorySurface>
+    </StoryPage>
+  ),
+};
 
 export const Default: Story = {
   render: () => (
@@ -21,6 +44,20 @@ export const Default: Story = {
           <DropdownItem icon={HiCog}>Settings</DropdownItem>
           <DropdownDivider />
           <DropdownItem>Sign out</DropdownItem>
+        </Dropdown>
+      </StorySurface>
+    </StoryPage>
+  ),
+};
+
+export const InlineTrigger: Story = {
+  render: () => (
+    <StoryPage>
+      <StorySurface>
+        <Dropdown inline label="Actions">
+          <DropdownItem>Edit</DropdownItem>
+          <DropdownItem>Duplicate</DropdownItem>
+          <DropdownItem>Archive</DropdownItem>
         </Dropdown>
       </StorySurface>
     </StoryPage>

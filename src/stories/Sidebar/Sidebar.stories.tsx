@@ -37,10 +37,34 @@ export const Default: Story = {
               </SidebarItem>
             </SidebarItemGroup>
             <SidebarCTA>
-              <p className="mb-2 text-sm font-semibold text-slate-900">Beta navigation</p>
-              <p className="mb-3 text-sm text-slate-600">Preview the new admin IA before the next release.</p>
+              <p className="mb-2 text-sm font-semibold text-slate-900 dark:text-white">Beta navigation</p>
+              <p className="mb-3 text-sm text-slate-600 dark:text-slate-300">Preview the new admin IA before the next release.</p>
               <Button size="xs">Review</Button>
             </SidebarCTA>
+          </SidebarItems>
+        </Sidebar>
+      </StorySurface>
+    </StoryPage>
+  ),
+};
+
+export const WithoutCTA: Story = {
+  render: () => (
+    <StoryPage>
+      <StorySurface>
+        <Sidebar aria-label="Sidebar example">
+          <SidebarItems>
+            <SidebarItemGroup>
+              <SidebarItem href="#" icon={HiChartPie}>
+                Dashboard
+              </SidebarItem>
+              <SidebarItem href="#" icon={HiInbox}>
+                Inbox
+              </SidebarItem>
+              <SidebarItem href="#" icon={HiUser}>
+                Users
+              </SidebarItem>
+            </SidebarItemGroup>
           </SidebarItems>
         </Sidebar>
       </StorySurface>
