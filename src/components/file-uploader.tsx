@@ -21,6 +21,8 @@ export type FileUploaderProps = {
   accept?: string
   maxFiles?: number
   maxSizeMB?: number
+  labels?: Partial<FileUploaderLabels>
+  messages?: Partial<FileUploaderMessages>
   className?: string
 }
 
@@ -42,6 +44,22 @@ const statusLabels: Record<UploadStatus, string> = {
   error: "Error",
 }
 
+export type FileUploaderLabels = {
+  browseButton: string
+  dropTitle: string
+  dropSubtitle: string
+  uploadAll: string
+  clearAll: string
+  uploadedSummary: (complete: number, total: number) => string
+  statusLabels: Partial<Record<UploadStatus, string>>
+}
+
+export type FileUploaderMessages = {
+  maxFiles: (maxFiles: number) => string
+  invalidType: (name: string) => string
+  maxSize: (name: string, maxSizeMB: number) => string
+}
+
 function formatBytes(bytes: number) {
   if (bytes === 0) return "0 B"
   const k = 1024
@@ -57,8 +75,30 @@ export function FileUploader({
   accept = ".pdf,.png,.jpg,.jpeg",
   maxFiles = 5,
   maxSizeMB = 25,
+  labels,
+  messages,
   className,
 }: FileUploaderProps) {
+  const mergedLabels: FileUploaderLabels = {
+    browseButton: "Browse files",
+    dropTitle: "Drop files here",
+    dropSubtitle: "or click to browse your device",
+    uploadAll: "Upload all",
+    clearAll: "Clear all",
+    uploadedSummary: (complete, total) =>
+      `${complete} of ${total} files uploaded`,
+    statusLabels: {},
+    ...labels,
+    statusLabels: { ...labels?.statusLabels },
+  }
+
+  const mergedMessages: FileUploaderMessages = {
+    maxFiles: (count) => `Only ${count} files can be uploaded at once.`,
+    invalidType: (name) => `${name} is not an accepted file type.`,
+    maxSize: (name, maxSize) => `${name} exceeds ${maxSize}MB.`,
+    ...messages,
+  }
+
   const [items, setItems] = React.useState<UploadItem[]>([])
   const [isDragging, setIsDragging] = React.useState(false)
   const [errors, setErrors] = React.useState<string[]>([])
@@ -80,7 +120,7 @@ export function FileUploader({
     const incoming = fileArray.slice(0, remainingSlots)
 
     if (fileArray.length > remainingSlots) {
-      nextErrors.push(`Only ${maxFiles} files can be uploaded at once.`)
+      nextErrors.push(mergedMessages.maxFiles(maxFiles))
     }
 
     const accepted = incoming.filter((file) => {
@@ -95,12 +135,12 @@ export function FileUploader({
           return file.type.toLowerCase() === type
         })
         if (!matches) {
-          nextErrors.push(`${file.name} is not an accepted file type.`)
+          nextErrors.push(mergedMessages.invalidType(file.name))
           return false
         }
       }
       if (file.size > maxSizeMB * 1024 * 1024) {
-        nextErrors.push(`${file.name} exceeds ${maxSizeMB}MB.`)
+        nextErrors.push(mergedMessages.maxSize(file.name, maxSizeMB))
         return false
       }
       return true
@@ -180,7 +220,9 @@ export function FileUploader({
           </h2>
           <p className="text-xs text-muted-foreground">{helperText}</p>
         </div>
-        <Button onClick={() => inputRef.current?.click()}>Browse files</Button>
+        <Button onClick={() => inputRef.current?.click()}>
+          {mergedLabels.browseButton}
+        </Button>
       </div>
 
       <div
@@ -199,9 +241,9 @@ export function FileUploader({
           <CloudUpload className="size-5" />
         </div>
         <div>
-          <p className="text-sm font-medium">Drop files here</p>
+          <p className="text-sm font-medium">{mergedLabels.dropTitle}</p>
           <p className="text-xs text-muted-foreground">
-            or click to browse your device
+            {mergedLabels.dropSubtitle}
           </p>
         </div>
       </div>
@@ -253,7 +295,8 @@ export function FileUploader({
                     statusStyles[item.status]
                   )}
                 >
-                  {statusLabels[item.status]}
+                  {mergedLabels.statusLabels[item.status] ??
+                    statusLabels[item.status]}
                 </Badge>
                 <Button
                   variant="ghost"
@@ -291,14 +334,16 @@ export function FileUploader({
 
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-xs text-muted-foreground">
-              {items.filter((item) => item.status === "complete").length} of{" "}
-              {items.length} files uploaded
+              {mergedLabels.uploadedSummary(
+                items.filter((item) => item.status === "complete").length,
+                items.length
+              )}
             </p>
             <div className="flex items-center gap-2">
               <Button variant="outline" onClick={() => setItems([])}>
-                Clear all
+                {mergedLabels.clearAll}
               </Button>
-              <Button onClick={startUpload}>Upload all</Button>
+              <Button onClick={startUpload}>{mergedLabels.uploadAll}</Button>
             </div>
           </div>
         </div>

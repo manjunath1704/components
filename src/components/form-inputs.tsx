@@ -16,11 +16,83 @@ import { Textarea } from "@/components/ui/textarea"
 
 export type FormInputsProps = {
   className?: string
+  labels?: Partial<FormInputsLabels>
 }
 
-export function FormInputs({ className }: FormInputsProps) {
+export type FormInputsLabels = {
+  eyebrow: string
+  title: string
+  subtitle: string
+  clientNameLabel: string
+  clientNamePlaceholder: string
+  contactLabel: string
+  contactPlaceholder: string
+  engagementLabel: string
+  engagementPlaceholder: string
+  engagementOptions: { label: string; value: string }[]
+  priorityLabel: string
+  priorityOptions: { label: string; value: string }[]
+  kickoffLabel: string
+  kickoffPlaceholder: string
+  notesLabel: string
+  notesPlaceholder: string
+  notificationsLabel: string
+  updatesLabel: string
+  alertsLabel: string
+  extrasLabel: string
+  extrasItems: { id: string; label: string }[]
+}
+
+const defaultLabels: FormInputsLabels = {
+  eyebrow: "Form inputs",
+  title: "Client onboarding form",
+  subtitle: "Capture a mix of inputs with a consistent, premium appearance.",
+  clientNameLabel: "Client name",
+  clientNamePlaceholder: "Nimbus Health",
+  contactLabel: "Primary contact",
+  contactPlaceholder: "you@studio.com",
+  engagementLabel: "Engagement type",
+  engagementPlaceholder: "Select type",
+  engagementOptions: [
+    { label: "Premium", value: "premium" },
+    { label: "Enterprise", value: "enterprise" },
+    { label: "Pilot", value: "pilot" },
+  ],
+  priorityLabel: "Priority",
+  priorityOptions: [
+    { label: "Standard", value: "standard" },
+    { label: "Express", value: "express" },
+    { label: "VIP", value: "vip" },
+  ],
+  kickoffLabel: "Kickoff date",
+  kickoffPlaceholder: "Pick a date",
+  notesLabel: "Project notes",
+  notesPlaceholder: "Share context, scope, and critical deadlines.",
+  notificationsLabel: "Notifications",
+  updatesLabel: "Send weekly progress updates to stakeholders",
+  alertsLabel: "Enable milestone alerts for the client",
+  extrasLabel: "Extras",
+  extrasItems: [
+    { id: "form-checklist", label: "Create a delivery checklist for this client" },
+    { id: "form-nda", label: "Request an NDA signature on kickoff" },
+  ],
+}
+
+export function FormInputs({ className, labels }: FormInputsProps) {
+  const copy = React.useMemo(
+    () => ({
+      ...defaultLabels,
+      ...labels,
+      engagementOptions:
+        labels?.engagementOptions ?? defaultLabels.engagementOptions,
+      priorityOptions: labels?.priorityOptions ?? defaultLabels.priorityOptions,
+      extrasItems: labels?.extrasItems ?? defaultLabels.extrasItems,
+    }),
+    [labels]
+  )
+
   const [date, setDate] = React.useState<Date | undefined>(new Date())
-  const [type, setType] = React.useState("premium")
+  const [type, setType] = React.useState(copy.engagementOptions[0]?.value ?? "premium")
 
   return (
     <div
@@ -31,57 +103,50 @@ export function FormInputs({ className }: FormInputsProps) {
     >
       <div className="space-y-2">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-          Form inputs
+          {copy.eyebrow}
         </p>
-        <h2 className="text-2xl font-semibold tracking-tight">
-          Client onboarding form
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          Capture a mix of inputs with a consistent, premium appearance.
-        </p>
+        <h2 className="text-2xl font-semibold tracking-tight">{copy.title}</h2>
+        <p className="text-sm text-muted-foreground">{copy.subtitle}</p>
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="form-name">Client name</Label>
-          <Input id="form-name" placeholder="Nimbus Health" />
+          <Label htmlFor="form-name">{copy.clientNameLabel}</Label>
+          <Input id="form-name" placeholder={copy.clientNamePlaceholder} />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="form-email">Primary contact</Label>
-          <Input id="form-email" placeholder="you@studio.com" type="email" />
+          <Label htmlFor="form-email">{copy.contactLabel}</Label>
+          <Input
+            id="form-email"
+            placeholder={copy.contactPlaceholder}
+            type="email"
+          />
         </div>
 
         <div className="space-y-2">
-          <Label>Engagement type</Label>
+          <Label>{copy.engagementLabel}</Label>
           <Select
-            placeholder="Select type"
-            options={[
-              { label: "Premium", value: "premium" },
-              { label: "Enterprise", value: "enterprise" },
-              { label: "Pilot", value: "pilot" },
-            ]}
+            placeholder={copy.engagementPlaceholder}
+            options={copy.engagementOptions}
             value={
-              [
-                { label: "Premium", value: "premium" },
-                { label: "Enterprise", value: "enterprise" },
-                { label: "Pilot", value: "pilot" },
-              ].find((option) => option.value === type) ?? null
+              copy.engagementOptions.find((option) => option.value === type) ??
+              null
             }
             onChange={(option) =>
-              setType((option as SelectOption | null)?.value ?? "premium")
+              setType(
+                (option as SelectOption | null)?.value ??
+                  copy.engagementOptions[0]?.value ??
+                  "premium"
+              )
             }
           />
         </div>
 
         <div className="space-y-3">
-          <Label>Priority</Label>
+          <Label>{copy.priorityLabel}</Label>
           <RadioGroup defaultValue="standard" className="grid gap-3">
-            {[
-              { value: "standard", label: "Standard" },
-              { value: "express", label: "Express" },
-              { value: "vip", label: "VIP" },
-            ].map((option) => (
+            {copy.priorityOptions.map((option) => (
               <label
                 key={option.value}
                 className="flex items-center gap-3 rounded-2xl border border-border/60 bg-background/60 px-3 py-2 text-sm"
@@ -94,7 +159,7 @@ export function FormInputs({ className }: FormInputsProps) {
         </div>
 
         <div className="space-y-2">
-          <Label>Kickoff date</Label>
+          <Label>{copy.kickoffLabel}</Label>
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -105,7 +170,7 @@ export function FormInputs({ className }: FormInputsProps) {
                 )}
               >
                 <CalendarIcon className="mr-2 size-4" />
-                {date ? format(date, "PPP") : "Pick a date"}
+                {date ? format(date, "PPP") : copy.kickoffPlaceholder}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
@@ -120,40 +185,38 @@ export function FormInputs({ className }: FormInputsProps) {
         </div>
 
         <div className="space-y-2 lg:col-span-2">
-          <Label htmlFor="form-notes">Project notes</Label>
+          <Label htmlFor="form-notes">{copy.notesLabel}</Label>
           <Textarea
             id="form-notes"
-            placeholder="Share context, scope, and critical deadlines."
+            placeholder={copy.notesPlaceholder}
             className="min-h-[120px]"
           />
         </div>
 
         <div className="grid gap-3 lg:col-span-2">
-          <Label>Notifications</Label>
+          <Label>{copy.notificationsLabel}</Label>
           <div className="flex items-center gap-3">
             <Switch id="form-updates" />
             <Label htmlFor="form-updates" className="text-sm">
-              Send weekly progress updates to stakeholders
+              {copy.updatesLabel}
             </Label>
           </div>
           <div className="flex items-center gap-3">
             <Switch id="form-alerts" />
             <Label htmlFor="form-alerts" className="text-sm">
-              Enable milestone alerts for the client
+              {copy.alertsLabel}
             </Label>
           </div>
         </div>
 
         <div className="grid gap-3 lg:col-span-2">
-          <Label>Extras</Label>
-          <label className="flex items-center gap-3 text-sm">
-            <Checkbox id="form-checklist" />
-            <span>Create a delivery checklist for this client</span>
-          </label>
-          <label className="flex items-center gap-3 text-sm">
-            <Checkbox id="form-nda" />
-            <span>Request an NDA signature on kickoff</span>
-          </label>
+          <Label>{copy.extrasLabel}</Label>
+          {copy.extrasItems.map((item) => (
+            <label key={item.id} className="flex items-center gap-3 text-sm">
+              <Checkbox id={item.id} />
+              <span>{item.label}</span>
+            </label>
+          ))}
         </div>
       </div>
     </div>

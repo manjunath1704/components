@@ -18,6 +18,8 @@ export type PricingTier = {
 export type PricingCardsProps = {
   title?: string
   subtitle?: string
+  popularLabel?: string
+  defaultCtaLabel?: string
   tiers: PricingTier[]
   className?: string
 }
@@ -25,6 +27,8 @@ export type PricingCardsProps = {
 export function PricingCards({
   title = "Pricing",
   subtitle = "Flexible plans that scale with your client work.",
+  popularLabel = "Most popular",
+  defaultCtaLabel = "Select plan",
   tiers,
   className,
 }: PricingCardsProps) {
@@ -51,7 +55,7 @@ export function PricingCards({
           >
             {tier.emphasized ? (
               <span className="absolute right-6 top-6 rounded-full bg-primary/20 px-3 py-1 text-[11px] uppercase tracking-[0.16em] text-primary">
-                Most popular
+                {popularLabel}
               </span>
             ) : null}
             <div className="space-y-3">
@@ -74,7 +78,7 @@ export function PricingCards({
                 tier.emphasized ? "" : "bg-secondary text-secondary-foreground"
               )}
             >
-              {tier.ctaLabel ?? "Select plan"}
+              {tier.ctaLabel ?? defaultCtaLabel}
             </Button>
             <div className="mt-6 space-y-3">
               {tier.highlights.map((item) => (

@@ -28,6 +28,8 @@ export type SearchFilterBarProps = {
   subtitle?: string
   resultCount?: string
   placeholder?: string
+  filterButtonLabel?: string
+  clearFiltersLabel?: string
   searchValue?: string
   onSearchChange?: (value: string) => void
   selects?: SelectFilter[]
@@ -43,6 +45,8 @@ export function SearchFilterBar({
   subtitle,
   resultCount,
   placeholder = "Search by name, tag, or owner",
+  filterButtonLabel = "Filters",
+  clearFiltersLabel = "Clear all",
   searchValue,
   onSearchChange,
   selects = [],
@@ -104,7 +108,7 @@ export function SearchFilterBar({
 
         <Button variant="outline" className="h-11">
           <SlidersHorizontal className="mr-2 size-4" />
-          Filters
+          {filterButtonLabel}
         </Button>
       </div>
 
@@ -129,7 +133,7 @@ export function SearchFilterBar({
           ))}
           {onClearFilters ? (
             <Button variant="ghost" size="sm" onClick={onClearFilters}>
-              Clear all
+              {clearFiltersLabel}
             </Button>
           ) : null}
         </div>

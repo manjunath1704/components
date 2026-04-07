@@ -22,17 +22,33 @@ export type AuthShellProps = {
     highlights: string[]
   }
   children: React.ReactNode
+  fullHeight?: boolean
 }
 
-export function AuthShell({ brand, marketing, children }: AuthShellProps) {
+export function AuthShell({
+  brand,
+  marketing,
+  children,
+  fullHeight = true,
+}: AuthShellProps) {
   return (
-    <div className="relative min-h-screen bg-background text-foreground">
+    <div
+      className={cn(
+        "relative bg-background text-foreground",
+        fullHeight ? "min-h-screen" : "min-h-0"
+      )}
+    >
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -right-24 top-[-10%] h-[28rem] w-[28rem] rounded-full bg-primary/25 blur-[140px]" />
         <div className="absolute -left-32 bottom-[-20%] h-[30rem] w-[30rem] rounded-full bg-accent/25 blur-[160px]" />
       </div>
 
-      <div className="grid min-h-screen lg:grid-cols-[1.1fr_0.9fr]">
+      <div
+        className={cn(
+          "grid lg:grid-cols-[1.1fr_0.9fr]",
+          fullHeight ? "min-h-screen" : "min-h-0"
+        )}
+      >
         <section className="relative hidden items-center overflow-hidden border-r border-border/60 bg-gradient-to-br from-primary/15 via-background to-background px-10 py-12 lg:flex">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(96,129,255,0.18),_transparent_55%)]" />
           <div className="relative z-10 max-w-md space-y-6">

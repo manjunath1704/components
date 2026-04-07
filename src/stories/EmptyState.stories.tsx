@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 
-import { FileUploader } from "@/components/file-uploader"
+import { EmptyState } from "@/components/empty-state"
 
 const meta = {
-  title: "Premium/FileUploader",
-  component: FileUploader,
+  title: "Premium/EmptyState",
+  component: EmptyState,
   parameters: {
     layout: "fullscreen",
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof FileUploader>
+} satisfies Meta<typeof EmptyState>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -23,10 +23,7 @@ export const Default: Story = {
       </div>
 
       <div className="mx-auto max-w-4xl">
-        <FileUploader
-          accept=".pdf,.png,.jpg,.jpeg"
-          helperText="Accepted: PDF, PNG, JPG up to 25MB each."
-        />
+        <EmptyState />
       </div>
     </div>
   ),

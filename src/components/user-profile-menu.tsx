@@ -1,4 +1,5 @@
 import * as React from "react"
+import type { LucideIcon } from "lucide-react"
 import { ChevronDown, LogOut, Settings, User } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -16,16 +17,35 @@ export type UserProfileMenuProps = {
   email: string
   role?: string
   avatarFallback?: string
+  menuItems?: UserProfileMenuItem[]
   className?: string
 }
+
+export type UserProfileMenuItem = {
+  id: string
+  label: string
+  icon: LucideIcon
+  destructive?: boolean
+  onSelect?: () => void
+}
+
+const defaultMenuItems: UserProfileMenuItem[] = [
+  { id: "profile", label: "View profile", icon: User },
+  { id: "settings", label: "Account settings", icon: Settings },
+  { id: "signout", label: "Sign out", icon: LogOut, destructive: true },
+]
 
 export function UserProfileMenu({
   name,
   email,
   role = "Workspace admin",
   avatarFallback = "AM",
+  menuItems = defaultMenuItems,
   className,
 }: UserProfileMenuProps) {
+  const primaryItems = menuItems.filter((item) => !item.destructive)
+  const destructiveItems = menuItems.filter((item) => item.destructive)
+
   return (
     <div className={cn("flex items-center", className)}>
       <DropdownMenu>
@@ -53,19 +73,31 @@ export function UserProfileMenu({
             <p className="text-xs text-muted-foreground">{email}</p>
           </div>
           <DropdownMenuSeparator className="my-2" />
-          <DropdownMenuItem className="rounded-xl px-3 py-2">
-            <User className="size-4" />
-            View profile
-          </DropdownMenuItem>
-          <DropdownMenuItem className="rounded-xl px-3 py-2">
-            <Settings className="size-4" />
-            Account settings
-          </DropdownMenuItem>
-          <DropdownMenuSeparator className="my-2" />
-          <DropdownMenuItem className="rounded-xl px-3 py-2 text-destructive">
-            <LogOut className="size-4" />
-            Sign out
-          </DropdownMenuItem>
+          {primaryItems.map((item) => (
+            <DropdownMenuItem
+              key={item.id}
+              className="rounded-xl px-3 py-2"
+              onSelect={item.onSelect}
+            >
+              <item.icon className="size-4" />
+              {item.label}
+            </DropdownMenuItem>
+          ))}
+          {destructiveItems.length ? (
+            <>
+              <DropdownMenuSeparator className="my-2" />
+              {destructiveItems.map((item) => (
+                <DropdownMenuItem
+                  key={item.id}
+                  className="rounded-xl px-3 py-2 text-destructive"
+                  onSelect={item.onSelect}
+                >
+                  <item.icon className="size-4" />
+                  {item.label}
+                </DropdownMenuItem>
+              ))}
+            </>
+          ) : null}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

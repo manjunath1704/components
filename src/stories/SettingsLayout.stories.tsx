@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 
-import { FileUploader } from "@/components/file-uploader"
+import { SettingsLayout } from "@/components/settings-layout"
 
 const meta = {
-  title: "Premium/FileUploader",
-  component: FileUploader,
+  title: "Premium/SettingsLayout",
+  component: SettingsLayout,
   parameters: {
     layout: "fullscreen",
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof FileUploader>
+} satisfies Meta<typeof SettingsLayout>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -22,11 +22,8 @@ export const Default: Story = {
         <div className="absolute -left-40 bottom-[-20%] h-[30rem] w-[30rem] rounded-full bg-accent/20 blur-[150px]" />
       </div>
 
-      <div className="mx-auto max-w-4xl">
-        <FileUploader
-          accept=".pdf,.png,.jpg,.jpeg"
-          helperText="Accepted: PDF, PNG, JPG up to 25MB each."
-        />
+      <div className="mx-auto max-w-6xl">
+        <SettingsLayout />
       </div>
     </div>
   ),

@@ -18,7 +18,16 @@ export type BillingPlanSelectorProps = {
   subtitle?: string
   plans: BillingPlan[]
   defaultBilling?: "monthly" | "annual"
+  labels?: Partial<BillingPlanSelectorLabels>
   className?: string
+}
+
+export type BillingPlanSelectorLabels = {
+  monthlyLabel: string
+  annualLabel: string
+  perMonthLabel: string
+  perYearLabel: string
+  continueLabel: (planName: string) => string
 }
 
 export function BillingPlanSelector({
@@ -26,12 +35,22 @@ export function BillingPlanSelector({
   subtitle = "Choose monthly or annual billing for each workspace.",
   plans,
   defaultBilling = "monthly",
+  labels,
   className,
 }: BillingPlanSelectorProps) {
   const [billing, setBilling] = React.useState<"monthly" | "annual">(
     defaultBilling
   )
   const [selectedPlan, setSelectedPlan] = React.useState(plans[1]?.id ?? plans[0]?.id)
+
+  const copy: BillingPlanSelectorLabels = {
+    monthlyLabel: "Monthly",
+    annualLabel: "Annual",
+    perMonthLabel: "per month",
+    perYearLabel: "per year",
+    continueLabel: (planName) => `Continue with ${planName}`,
+    ...labels,
+  }
 
   return (
     <section className={cn("space-y-6", className)}>
@@ -44,8 +63,8 @@ export function BillingPlanSelector({
         </div>
         <div className="flex items-center gap-2 rounded-full border border-border/60 bg-card/60 p-1">
           {[
-            { value: "monthly", label: "Monthly" },
-            { value: "annual", label: "Annual" },
+            { value: "monthly", label: copy.monthlyLabel },
+            { value: "annual", label: copy.annualLabel },
           ].map((option) => (
             <button
               key={option.value}
@@ -100,7 +119,9 @@ export function BillingPlanSelector({
                   {billing === "monthly" ? plan.monthlyPrice : plan.annualPrice}
                 </span>
                 <span className="text-xs text-muted-foreground">
-                  {billing === "monthly" ? "per month" : "per year"}
+                  {billing === "monthly"
+                    ? copy.perMonthLabel
+                    : copy.perYearLabel}
                 </span>
               </div>
 
@@ -117,7 +138,9 @@ export function BillingPlanSelector({
 
               {isSelected ? (
                 <div className="mt-6">
-                  <Button className="w-full">Continue with {plan.name}</Button>
+                  <Button className="w-full">
+                    {copy.continueLabel(plan.name)}
+                  </Button>
                 </div>
               ) : null}
             </button>

@@ -28,7 +28,33 @@ export type AppShellProps = {
   user: AppShellUser
   navItems: AppShellNavItem[]
   activeItemId?: string
+  copy?: Partial<AppShellCopy>
+  fullHeight?: boolean
   children?: React.ReactNode
+}
+
+export type AppShellCopy = {
+  searchPlaceholder: string
+  newRequestLabel: string
+  workspaceLabel: string
+  usageLabel: string
+  usageHint: string
+  upgradeLabel: string
+  notificationsAriaLabel: string
+  searchAriaLabel: string
+  newRequestAriaLabel: string
+}
+
+const defaultCopy: AppShellCopy = {
+  searchPlaceholder: "Search components, teams, or files",
+  newRequestLabel: "New request",
+  workspaceLabel: "Workspace",
+  usageLabel: "Usage",
+  usageHint: "Upgrade to unlock unlimited projects.",
+  upgradeLabel: "Upgrade plan",
+  notificationsAriaLabel: "Notifications",
+  searchAriaLabel: "Search",
+  newRequestAriaLabel: "New request",
 }
 
 export function AppShell({
@@ -36,10 +62,19 @@ export function AppShell({
   user,
   navItems,
   activeItemId,
+  copy,
+  fullHeight = true,
   children,
 }: AppShellProps) {
+  const labels = { ...defaultCopy, ...copy }
+
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
+    <div
+      className={cn(
+        "relative overflow-hidden bg-background text-foreground",
+        fullHeight ? "min-h-screen" : "min-h-0"
+      )}
+    >
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -right-32 -top-40 h-[28rem] w-[28rem] rounded-full bg-primary/30 blur-[140px]" />
         <div className="absolute -bottom-48 -left-32 h-[32rem] w-[32rem] rounded-full bg-accent/30 blur-[160px]" />
@@ -65,14 +100,18 @@ export function AppShell({
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 className="h-10 w-64 rounded-full border border-border/60 bg-card/60 pl-9 pr-3 text-sm text-foreground shadow-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
-                placeholder="Search components, teams, or files"
+                placeholder={labels.searchPlaceholder}
                 type="search"
               />
             </label>
-            <Button variant="outline" size="icon" aria-label="Notifications">
+            <Button
+              variant="outline"
+              size="icon"
+              aria-label={labels.notificationsAriaLabel}
+            >
               <Bell className="size-4" />
             </Button>
-            <Button>New request</Button>
+            <Button>{labels.newRequestLabel}</Button>
             <button className="flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-3 py-1.5 text-sm shadow-sm transition hover:bg-card/80">
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-xs font-semibold">
                 {user.initials}
@@ -88,10 +127,17 @@ export function AppShell({
           </div>
 
           <div className="flex items-center gap-2 md:hidden">
-            <Button variant="outline" size="icon" aria-label="Search">
+            <Button
+              variant="outline"
+              size="icon"
+              aria-label={labels.searchAriaLabel}
+            >
               <Search className="size-4" />
             </Button>
-            <Button size="icon" aria-label="New request">
+            <Button
+              size="icon"
+              aria-label={labels.newRequestAriaLabel}
+            >
               <Sparkles className="size-4" />
             </Button>
           </div>
@@ -102,7 +148,7 @@ export function AppShell({
         <aside className="hidden w-64 shrink-0 flex-col gap-6 lg:flex">
           <div className="rounded-2xl border border-border/60 bg-card/60 p-4 shadow-[0_20px_50px_-35px_rgba(5,8,20,0.9)] backdrop-blur">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              Workspace
+              {labels.workspaceLabel}
             </p>
             <nav className="mt-3 space-y-1">
               {navItems.map((item) => {
@@ -136,17 +182,17 @@ export function AppShell({
 
           <div className="rounded-2xl border border-border/60 bg-card/60 p-4 shadow-[0_20px_50px_-35px_rgba(5,8,20,0.9)] backdrop-blur">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold">Usage</p>
+              <p className="text-sm font-semibold">{labels.usageLabel}</p>
               <span className="text-xs text-muted-foreground">72%</span>
             </div>
             <div className="mt-2 h-2 w-full rounded-full bg-muted">
               <div className="h-2 w-[72%] rounded-full bg-primary" />
             </div>
             <p className="mt-3 text-xs text-muted-foreground">
-              Upgrade to unlock unlimited projects.
+              {labels.usageHint}
             </p>
             <Button className="mt-3 w-full" size="sm">
-              Upgrade plan
+              {labels.upgradeLabel}
             </Button>
           </div>
         </aside>

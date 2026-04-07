@@ -37,11 +37,61 @@ export type DataTableRow = {
 
 export type DataTableProps = {
   rows: DataTableRow[]
+  copy?: Partial<DataTableCopy>
+  statusLabels?: Partial<Record<DataTableStatus, string>>
+  rowActions?: DataTableRowActions
   className?: string
 }
 
 type SortKey = "client" | "project" | "updated" | "revenue" | "status"
 type SortDirection = "asc" | "desc"
+
+export type DataTableCopy = {
+  eyebrow: string
+  title: string
+  description: string
+  filterButtonLabel: string
+  newReportLabel: string
+  searchPlaceholder: string
+  statusPlaceholder: string
+  showingLabel: (visible: number, total: number) => string
+  actionsHeader: string
+  emptyLabel: string
+  columnLabels: Partial<Record<SortKey | "owner", string>>
+}
+
+export type DataTableRowActions = {
+  view: string
+  assign: string
+  archive: string
+}
+
+const defaultCopy: DataTableCopy = {
+  eyebrow: "Client delivery",
+  title: "Active engagements",
+  description: "Review status, owners, and projected revenue in one place.",
+  filterButtonLabel: "Filters",
+  newReportLabel: "New report",
+  searchPlaceholder: "Search by client, project, or owner",
+  statusPlaceholder: "Filter status",
+  showingLabel: (visible, total) => `Showing ${visible} of ${total}`,
+  actionsHeader: "Actions",
+  emptyLabel: "No results match your filters.",
+  columnLabels: {
+    client: "Client",
+    project: "Project",
+    owner: "Owner",
+    updated: "Updated",
+    revenue: "Revenue",
+    status: "Status",
+  },
+}
+
+const defaultRowActions: DataTableRowActions = {
+  view: "View brief",
+  assign: "Assign owner",
+  archive: "Archive",
+}
 
 const statusStyles: Record<DataTableStatus, string> = {
   active:
@@ -65,7 +115,22 @@ function sortRows(
   })
 }
 
-export function DataTable({ rows, className }: DataTableProps) {
+export function DataTable({
+  rows,
+  className,
+  copy,
+  statusLabels,
+  rowActions = defaultRowActions,
+}: DataTableProps) {
+  const labels = React.useMemo(
+    () => ({
+      ...defaultCopy,
+      ...copy,
+      columnLabels: { ...defaultCopy.columnLabels, ...copy?.columnLabels },
+    }),
+    [copy]
+  )
+
   const [query, setQuery] = React.useState("")
   const [status, setStatus] = React.useState<DataTableStatus | "all">("all")
   const [sortKey, setSortKey] = React.useState<SortKey>("updated")
@@ -108,9 +173,18 @@ export function DataTable({ rows, className }: DataTableProps) {
   const SortIcon = sortDirection === "asc" ? ChevronUp : ChevronDown
   const statusOptions: SelectOption[] = [
     { label: "All statuses", value: "all" },
-    { label: "Active", value: "active" },
-    { label: "Paused", value: "paused" },
-    { label: "Draft", value: "draft" },
+    {
+      label: statusLabels?.active ?? "Active",
+      value: "active",
+    },
+    {
+      label: statusLabels?.paused ?? "Paused",
+      value: "paused",
+    },
+    {
+      label: statusLabels?.draft ?? "Draft",
+      value: "draft",
+    },
   ]
 
   const toggleAll = () => {
@@ -147,34 +221,34 @@ export function DataTable({ rows, className }: DataTableProps) {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Client delivery
+            {labels.eyebrow}
           </p>
           <h2 className="text-2xl font-semibold tracking-tight">
-            Active engagements
+            {labels.title}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Review status, owners, and projected revenue in one place.
+            {labels.description}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Button variant="outline">
             <Filter className="mr-2 size-4" />
-            Filters
+            {labels.filterButtonLabel}
           </Button>
-          <Button>New report</Button>
+          <Button>{labels.newReportLabel}</Button>
         </div>
       </div>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <Input
           className="h-10 min-w-[220px] flex-1 bg-background/60"
-          placeholder="Search by client, project, or owner"
+          placeholder={labels.searchPlaceholder}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
         <div className="w-[200px]">
           <Select
-            placeholder="Filter status"
+            placeholder={labels.statusPlaceholder}
             options={statusOptions}
             value={statusOptions.find((option) => option.value === status) ?? null}
             onChange={(option) =>
@@ -187,7 +261,7 @@ export function DataTable({ rows, className }: DataTableProps) {
           />
         </div>
         <div className="text-xs text-muted-foreground">
-          Showing {sortedRows.length} of {rows.length}
+          {labels.showingLabel(sortedRows.length, rows.length)}
         </div>
       </div>
 
@@ -203,12 +277,21 @@ export function DataTable({ rows, className }: DataTableProps) {
                 />
               </TableHead>
               {[
-                { key: "client", label: "Client" },
-                { key: "project", label: "Project" },
-                { key: "owner", label: "Owner" },
-                { key: "updated", label: "Updated" },
-                { key: "revenue", label: "Revenue" },
-                { key: "status", label: "Status" },
+                { key: "client", label: labels.columnLabels.client ?? "Client" },
+                {
+                  key: "project",
+                  label: labels.columnLabels.project ?? "Project",
+                },
+                { key: "owner", label: labels.columnLabels.owner ?? "Owner" },
+                {
+                  key: "updated",
+                  label: labels.columnLabels.updated ?? "Updated",
+                },
+                {
+                  key: "revenue",
+                  label: labels.columnLabels.revenue ?? "Revenue",
+                },
+                { key: "status", label: labels.columnLabels.status ?? "Status" },
               ].map((column) => (
                 <TableHead
                   key={column.key}
@@ -230,7 +313,7 @@ export function DataTable({ rows, className }: DataTableProps) {
                 </TableHead>
               ))}
               <TableHead className="px-4 py-3 text-xs font-semibold text-muted-foreground">
-                Actions
+                {labels.actionsHeader}
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -264,7 +347,7 @@ export function DataTable({ rows, className }: DataTableProps) {
                       statusStyles[row.status]
                     )}
                   >
-                    {row.status}
+                    {statusLabels?.[row.status] ?? row.status}
                   </Badge>
                 </TableCell>
                 <TableCell className="px-4 py-3">
@@ -279,16 +362,16 @@ export function DataTable({ rows, className }: DataTableProps) {
                       className="min-w-[180px] rounded-xl border border-border/60 bg-popover/80 p-2 shadow-[0_18px_45px_-30px_rgba(5,8,20,0.9)] backdrop-blur"
                     >
                       <DropdownMenuItem className="rounded-lg px-3 py-2">
-                        View brief
+                        {rowActions.view}
                       </DropdownMenuItem>
                       <DropdownMenuItem className="rounded-lg px-3 py-2">
-                        Assign owner
+                        {rowActions.assign}
                       </DropdownMenuItem>
                       <DropdownMenuSeparator className="my-1" />
                       <DropdownMenuItem
                         className="rounded-lg px-3 py-2 text-destructive"
                       >
-                        Archive
+                        {rowActions.archive}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -301,7 +384,7 @@ export function DataTable({ rows, className }: DataTableProps) {
                   colSpan={8}
                   className="py-12 text-center text-sm text-muted-foreground"
                 >
-                  No results match your filters.
+                  {labels.emptyLabel}
                 </TableCell>
               </TableRow>
             ) : null}

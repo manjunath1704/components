@@ -87,7 +87,7 @@ export const CardGrid: Story = {
     layout: 'fullscreen',
   },
   render: () => (
-    <div className="relative min-h-screen bg-background p-8 text-foreground">
+    <div className="relative bg-background p-8 text-foreground">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -right-32 -top-20 h-[22rem] w-[22rem] rounded-full bg-primary/25 blur-[120px]" />
         <div className="absolute -left-32 bottom-[-20%] h-[26rem] w-[26rem] rounded-full bg-accent/20 blur-[140px]" />

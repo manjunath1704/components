@@ -36,6 +36,7 @@ export const Default: Story = {
       brand={{ name: "Nimbus", tagline: "Premium client hub" }}
       user={{ name: "Avery Mason", role: "Design Lead", initials: "AM" }}
       activeItemId="overview"
+      fullHeight={false}
       navItems={[
         { id: "overview", label: "Overview", icon: LayoutGrid },
         { id: "projects", label: "Projects", icon: FolderKanban, badge: "12" },

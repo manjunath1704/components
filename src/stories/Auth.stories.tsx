@@ -35,6 +35,7 @@ export const SignIn: Story = {
     <AuthShell
       brand={{ name: "Nimbus", tagline: "Client operations" }}
       marketing={marketing}
+      fullHeight={false}
     >
       <AuthCard
         title="Welcome back"
@@ -107,6 +108,7 @@ export const SignUp: Story = {
     <AuthShell
       brand={{ name: "Nimbus", tagline: "Client operations" }}
       marketing={marketing}
+      fullHeight={false}
     >
       <AuthCard
         title="Create your account"
@@ -161,6 +163,7 @@ export const ForgotPassword: Story = {
     <AuthShell
       brand={{ name: "Nimbus", tagline: "Client operations" }}
       marketing={marketing}
+      fullHeight={false}
     >
       <AuthCard
         title="Reset your password"
