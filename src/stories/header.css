@@ -2,9 +2,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 15px 20px;
-  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  border-bottom: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);
+  background: color-mix(in oklab, var(--card) 75%, transparent);
+  padding: 18px 24px;
+  border-radius: 18px;
+  margin: 24px auto 0;
+  max-width: 960px;
+  box-shadow: 0 24px 50px -35px rgba(5, 8, 20, 0.85);
+  font-family: 'Geist Variable', system-ui, sans-serif;
 }
 
 .storybook-header svg {
@@ -19,6 +24,7 @@
   font-weight: 700;
   font-size: 20px;
   line-height: 1;
+  color: var(--foreground);
 }
 
 .storybook-header button + button {
@@ -27,6 +33,6 @@
 
 .storybook-header .welcome {
   margin-right: 10px;
-  color: #333;
+  color: var(--muted-foreground);
   font-size: 14px;
 }

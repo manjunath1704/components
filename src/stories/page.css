@@ -1,11 +1,15 @@
 .storybook-page {
-  margin: 0 auto;
-  padding: 48px 20px;
-  max-width: 600px;
-  color: #333;
+  margin: 24px auto 60px;
+  padding: 40px 32px;
+  max-width: 720px;
+  color: var(--foreground);
   font-size: 14px;
   line-height: 24px;
-  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: color-mix(in oklab, var(--card) 70%, transparent);
+  border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);
+  border-radius: 20px;
+  box-shadow: 0 26px 60px -40px rgba(5, 8, 20, 0.85);
+  font-family: 'Geist Variable', system-ui, sans-serif;
 }
 
 .storybook-page h2 {
@@ -22,7 +26,7 @@
 }
 
 .storybook-page a {
-  color: inherit;
+  color: var(--primary);
 }
 
 .storybook-page ul {
@@ -39,9 +43,9 @@
   vertical-align: top;
   margin-right: 10px;
   border-radius: 1em;
-  background: #e7fdd8;
+  background: color-mix(in oklab, var(--primary) 18%, transparent);
   padding: 4px 12px;
-  color: #357a14;
+  color: var(--primary);
   font-weight: 700;
   font-size: 11px;
   line-height: 12px;
@@ -64,5 +68,5 @@
 }
 
 .storybook-page .tip-wrapper svg path {
-  fill: #1ea7fd;
+  fill: var(--primary);
 }
